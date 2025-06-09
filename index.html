@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Blog Template · Bootstrap v5.0</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/blog/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Hind:300,400,700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons%7CMaterial+Icons+Outlined&amp;display=swap"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="assets/main.css" rel="stylesheet">
+
+    <!-- Prism CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/diff-highlight/prism-diff-highlight.min.css"
+        rel="stylesheet" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body class="text-light">
+
+    <main class="container">
+        <div class="p-4 p-md-5 mb-4 rounded">
+            <div class="col-md-10 px-0">
+                <p><img src="https://coding.blog/banner-dark.svg" class="img-fluid" alt="Banner"></p>
+                <h1 class="display-4 lead">Scalping EA</h1>
+                <h2 class="fw-bold">Code Contributions & Improvements</h2>
+                <p class="fw-light my-3 fs-2">Welcome to the community tracker for the Scalping EA (Forex, Gold,
+                    Indices) maintained by the No Shenanigans community. Below are all changes, additions, and
+                    optimizations submitted by contributors.</p>
+            </div>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-md-8">
+                <h3 class="pb-4 mb-4 fst-italic border-bottom">
+                    Remember, No Shenanigans
+                </h3>
+
+                <article id="adx" class="blog-post mb-10">
+                    <h2 class="blog-post-title">Sample blog post</h2>
+                    <p class="blog-post-meta">January 1, 2021 by Mark</p>
+
+                    <p>This blog post shows a few different types of content that’s supported and styled with Bootstrap.
+                        Basic typography, lists, tables, images, code, and more are all supported as expected.</p>
+                    <hr>
+                    <p>This is some additional paragraph placeholder content. It has been written to fill the available
+                        space and show how a longer snippet of text affects the surrounding content. We'll repeat it
+                        often to keep the demonstration flowing, so be on the lookout for this exact same string of
+                        text.</p>
+                    <pre><code class="language-cpp">input double MaxSpread = 20.0;
+
+bool CheckSpread() {
+  double spread = (Ask - Bid) / _Point;
+  return (spread <= MaxSpread);
+}</code></pre>
+                    <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the
+                        other highly repetitive body text used throughout.</p>
+                </article>
+
+                <article class="blog-post">
+                    <h2 class="blog-post-title">Smarter Scalping with ADX-Based BarsN Adjustment</h2>
+                    <p class="blog-post-meta">December 09, 2025 by Jacob</p>
+
+                    <p>In fast-paced markets, having a dynamic approach to price action can make all the difference. That’s where the ADX-Based BarsN Adjustment feature in our scalping EA comes in—a smart enhancement designed to adapt the EA’s behavior based on market volatility.</p>
+                    <h3>What Is ADX-Based BarsN Adjustment?</h3>
+                    <p>When enabled, this feature uses the Average Directional Index (ADX) to automatically determine how many bars (BarsN) the EA should look back to identify recent highs and lows in price. Instead of using a fixed number of bars across all market conditions, the EA adapts dynamically: fewer bars in high-volatility conditions and more bars in calmer markets.
+                    This helps the strategy stay nimble—reacting quickly when the market is moving fast, and avoiding noise when it's not.</p>
+<h2 class="mt-4 mb-3">The Settings Breakdown</h2>
+<ul class="list-unstyled mb-4">
+  <li><strong>Enabled:</strong> Yes</li>
+  <li><strong>ADX Period:</strong> 14</li>
+  <li><strong>Timeframe:</strong> 1 Hour</li>
+  <li><strong>Volatility Thresholds:</strong>
+    <ul class="ms-3">
+      <li>Very High: ADX ≥ 50</li>
+      <li>High: ADX ≥ 40</li>
+      <li>Medium: ADX ≥ 30</li>
+      <li>Low: ADX ≥ 20</li>
+    </ul>
+  </li>
+</ul>
+<h3 class="mt-4 mb-3">How BarsN Adjusts by Volatility</h3>
+<div class="table-responsive mb-4">
+  <table class="table table-dark table-bordered table-striped align-middle">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">ADX Value Range</th>
+        <th scope="col">Market Volatility</th>
+        <th scope="col">BarsN (Lookback Period)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>&gt; 50</td>
+        <td>Very High</td>
+        <td>5 bars</td>
+      </tr>
+      <tr>
+        <td>&gt; 40</td>
+        <td>High</td>
+        <td>10 bars</td>
+      </tr>
+      <tr>
+        <td>&gt; 30</td>
+        <td>Medium</td>
+        <td>20 bars</td>
+      </tr>
+      <tr>
+        <td>&gt; 20</td>
+        <td>Low</td>
+        <td>40 bars</td>
+      </tr>
+      <tr>
+        <td>≤ 20</td>
+        <td>Very Low</td>
+        <td>80 bars</td>
+      </tr>
+    </tbody>
+  </table>
+</div>                   
+                    <pre class="language-diff-cpp diff-highlight"><code>-   if (Volume[0] > 1 && Close[1] > Open[1])
++   if (Volume[0] > 1 && Close[1] > Open[1] && iRSI(NULL, 0, 14, PRICE_CLOSE, 0) < 70)</code></pre>
+
+                    <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the
+                        other highly repetitive body text used throughout.</p>
+                    <canvas id="backtestChart" width="600" height="400"></canvas>
+                </article>
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="position-sticky" style="top: 2rem;">
+
+                    <div class="p-4 archive">
+                        <h4 class="fst-italic">Archives</h4>
+                        <ol class="list-unstyled mb-0">
+                            <li><a href="#adx">Dynamic ADX - barsN</a></li>
+                            <li><a href="#">February 2021</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="blog-footer">
+        <p>
+            <a href="#">Back to top</a>
+        </p>
+    </footer>
+
+
+
+    <!-- Prism JS -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/diff-highlight/prism-diff-highlight.min.js"></script>
+    <script>
+        Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1/components/';
+    </script>
+    <!-- Chart.js Backtest Data -->
+    <script>
+        const ctx = document.getElementById('backtestChart').getContext('2d');
+        const backtestChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [
+                    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                ],
+                datasets: [
+                    {
+                        label: 'Original EA',
+                        data: [1000, 1200, 1150, 1300, 1280, 1400, 1350, 1450, 1500, 1480, 1550, 1600],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Improved EA with RSI',
+                        data: [1000, 1250, 1350, 1450, 1550, 1600, 1700, 1800, 1900, 2000, 2100, 2250],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Balance'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
