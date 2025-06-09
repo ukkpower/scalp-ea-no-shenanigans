@@ -93,70 +93,76 @@ bool CheckSpread() {
 
                 <article class="blog-post">
                     <h2 class="blog-post-title">Smarter Scalping with ADX-Based BarsN Adjustment</h2>
-                    <p class="blog-post-meta">December 09, 2025 by Jacob</p>
+                    <p class="blog-post-meta">June 09, 2025 by Luis</p>
 
-                    <p>In fast-paced markets, having a dynamic approach to price action can make all the difference. That’s where the ADX-Based BarsN Adjustment feature in our scalping EA comes in—a smart enhancement designed to adapt the EA’s behavior based on market volatility.</p>
+                    <p>In fast-paced markets, having a dynamic approach to price action can make all the difference.
+                        That’s where the ADX-Based BarsN Adjustment feature in our scalping EA comes in—a smart
+                        enhancement designed to adapt the EA’s behavior based on market volatility.</p>
                     <h3>What Is ADX-Based BarsN Adjustment?</h3>
-                    <p>When enabled, this feature uses the Average Directional Index (ADX) to automatically determine how many bars (BarsN) the EA should look back to identify recent highs and lows in price. Instead of using a fixed number of bars across all market conditions, the EA adapts dynamically: fewer bars in high-volatility conditions and more bars in calmer markets.
-                    This helps the strategy stay nimble—reacting quickly when the market is moving fast, and avoiding noise when it's not.</p>
-<h2 class="mt-4 mb-3">The Settings Breakdown</h2>
-<ul class="list-unstyled mb-4">
-  <li><strong>Enabled:</strong> Yes</li>
-  <li><strong>ADX Period:</strong> 14</li>
-  <li><strong>Timeframe:</strong> 1 Hour</li>
-  <li><strong>Volatility Thresholds:</strong>
-    <ul class="ms-3">
-      <li>Very High: ADX ≥ 50</li>
-      <li>High: ADX ≥ 40</li>
-      <li>Medium: ADX ≥ 30</li>
-      <li>Low: ADX ≥ 20</li>
-    </ul>
-  </li>
-</ul>
-<h3 class="mt-4 mb-3">How BarsN Adjusts by Volatility</h3>
-<div class="table-responsive mb-4">
-  <table class="table table-dark table-bordered table-striped align-middle">
-    <thead class="table-light">
-      <tr>
-        <th scope="col">ADX Value Range</th>
-        <th scope="col">Market Volatility</th>
-        <th scope="col">BarsN (Lookback Period)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>&gt; 50</td>
-        <td>Very High</td>
-        <td>5 bars</td>
-      </tr>
-      <tr>
-        <td>&gt; 40</td>
-        <td>High</td>
-        <td>10 bars</td>
-      </tr>
-      <tr>
-        <td>&gt; 30</td>
-        <td>Medium</td>
-        <td>20 bars</td>
-      </tr>
-      <tr>
-        <td>&gt; 20</td>
-        <td>Low</td>
-        <td>40 bars</td>
-      </tr>
-      <tr>
-        <td>≤ 20</td>
-        <td>Very Low</td>
-        <td>80 bars</td>
-      </tr>
-    </tbody>
-  </table>
-</div>                   
+                    <p>When enabled, this feature uses the Average Directional Index (ADX) to automatically determine
+                        how many bars (BarsN) the EA should look back to identify recent highs and lows in price.
+                        Instead of using a fixed number of bars across all market conditions, the EA adapts dynamically:
+                        fewer bars in high-volatility conditions and more bars in calmer markets.
+                        This helps the strategy stay nimble—reacting quickly when the market is moving fast, and
+                        avoiding noise when it's not.</p>
+                    <h2 class="mt-4 mb-3">The Settings Breakdown</h2>
+                    <ul class="list-unstyled mb-4">
+                        <li><strong>Enabled:</strong> Yes</li>
+                        <li><strong>ADX Period:</strong> 14</li>
+                        <li><strong>Timeframe:</strong> 1 Hour</li>
+                        <li><strong>Volatility Thresholds:</strong>
+                            <ul class="ms-3">
+                                <li>Very High: ADX ≥ 50</li>
+                                <li>High: ADX ≥ 40</li>
+                                <li>Medium: ADX ≥ 30</li>
+                                <li>Low: ADX ≥ 20</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <h3 class="mt-4 mb-3">How BarsN Adjusts by Volatility</h3>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-dark table-bordered table-striped align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">ADX Value Range</th>
+                                    <th scope="col">Market Volatility</th>
+                                    <th scope="col">BarsN (Lookback Period)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>&gt; 50</td>
+                                    <td>Very High</td>
+                                    <td>5 bars</td>
+                                </tr>
+                                <tr>
+                                    <td>&gt; 40</td>
+                                    <td>High</td>
+                                    <td>10 bars</td>
+                                </tr>
+                                <tr>
+                                    <td>&gt; 30</td>
+                                    <td>Medium</td>
+                                    <td>20 bars</td>
+                                </tr>
+                                <tr>
+                                    <td>&gt; 20</td>
+                                    <td>Low</td>
+                                    <td>40 bars</td>
+                                </tr>
+                                <tr>
+                                    <td>≤ 20</td>
+                                    <td>Very Low</td>
+                                    <td>80 bars</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h4>The Code</h4>
                     <pre class="language-diff-cpp diff-highlight"><code>-   if (Volume[0] > 1 && Close[1] > Open[1])
 +   if (Volume[0] > 1 && Close[1] > Open[1] && iRSI(NULL, 0, 14, PRICE_CLOSE, 0) < 70)</code></pre>
-
-                    <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the
-                        other highly repetitive body text used throughout.</p>
+                    <h4>Performance</h4>
+                    <p>Here are the results of backtesting compared to the standard EA setting.</p>
                     <canvas id="backtestChart" width="600" height="400"></canvas>
                 </article>
 
