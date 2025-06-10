@@ -70,7 +70,7 @@
                     Remember, No Shenanigans
                 </h3>
 
-                <article class="blog-post mb-10">
+                <article id="adx" class="blog-post mb-10">
                     <h2 class="blog-post-title">Smarter Scalping with ADX-Based BarsN Adjustment</h2>
                     <p class="blog-post-meta">June 09, 2025 by Luis</p>
 
@@ -145,28 +145,77 @@
                     <canvas id="backtestChart" width="600" height="400"></canvas>
                 </article>
 
-                <article id="adx" class="blog-post mb-10">
+                <article id="timezone" class="blog-post mb-10">
                     <h2 class="blog-post-title">Sample blog post</h2>
                     <p class="blog-post-meta">January 1, 2021 by Mark</p>
 
-                    <p>This blog post shows a few different types of content that’s supported and styled with Bootstrap.
-                        Basic typography, lists, tables, images, code, and more are all supported as expected.</p>
-                    <hr>
-                    <p>This is some additional paragraph placeholder content. It has been written to fill the available
-                        space and show how a longer snippet of text affects the surrounding content. We'll repeat it
-                        often to keep the demonstration flowing, so be on the lookout for this exact same string of
-                        text.</p>
-                    <pre><code class="language-cpp">input double MaxSpread = 20.0;
+                    <h1>Latest Update: Timezone-Based Trading Hours & Modular Code Improvements</h1>
+                    <p>Welcome back to the Scalp EA No Shenanigans blog! In this post, I'll walk you through some recent
+                        enhancements made to the Expert Advisor to improve flexibility, especially around trading hours
+                        based on timezones, and modularizing the code for easier future updates.</p>
 
-bool CheckSpread() {
-  double spread = (Ask - Bid) / _Point;
-  return (spread <= MaxSpread);
-}</code></pre>
-                    <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the
-                        other highly repetitive body text used throughout.</p>
+                    <h2>What’s New?</h2>
+                    <ul>
+                        <li>Added timezone selection for trading hours, allowing you to pick your local timezone or any
+                            timezone, with automatic conversion to the broker server time.</li>
+                        <li>Refactored trading hours logic into a reusable module, so it’s cleaner and easier to
+                            maintain.</li>
+                    </ul>
+
+                    <h2>Why This Matters</h2>
+                    <p>Previously, trading hours were hard-coded in server time, which made it tricky if your broker’s
+                        server time was different from your local time zone. This update ensures you can define trading
+                        windows in your preferred timezone, and the EA will handle the conversion seamlessly.</p>
+
+                    <h2>Code Changes Overview</h2>
+                    <p>Here’s an example snippet showing how the existing hardcoded trading hours logic was replaced
+                        with the new modular timezone-based approach.</p>
+
+                    <pre class="language-mql highlight-diff">
+<code>
+<span class="delete">datetime tradeStart = D'1970.01.01 07:00';</span>
+<span class="delete">datetime tradeEnd = D'1970.01.01 22:00';</span>
+
+<span class="insert">// Use modular timezone conversion to get trading window in server time</span>
+<span class="insert">datetime tradeStart = GetTradeStartTime(userTimezone, serverTimezone);</span>
+<span class="insert">datetime tradeEnd = GetTradeEndTime(userTimezone, serverTimezone);</span>
+</code>
+</pre>
+
+                    <h2>Modular Timezone Trading Hours Functions</h2>
+                    <p>The new functions encapsulate all the timezone math, keeping the main EA code clean:</p>
+
+                    <pre class="language-mql highlight-diff">
+<code>
+<span class="insert">datetime GetTradeStartTime(string userTZ, string serverTZ) {</span>
+<span class="insert">    // Logic to convert user-defined start time to server time</span>
+<span class="insert">    // ...</span>
+<span class="insert">    return serverStartTime;</span>
+<span class="insert">}</span>
+
+<span class="insert">datetime GetTradeEndTime(string userTZ, string serverTZ) {</span>
+<span class="insert">    // Logic to convert user-defined end time to server time</span>
+<span class="insert">    // ...</span>
+<span class="insert">    return serverEndTime;</span>
+<span class="insert">}</span>
+</code>
+</pre>
+
+                    <h2>How to Use</h2>
+                    <p>Set your desired timezone in the input parameters, for example:</p>
+                    <ul>
+                        <li><code>Input string userTimezone = "Europe/Dublin";</code></li>
+                        <li>The EA handles the rest, converting your times to broker server time automatically.</li>
+                    </ul>
+
+                    <h2>Conclusion</h2>
+                    <p>This update is just one step toward making Scalp EA more adaptable to diverse trading
+                        environments. Stay tuned for more improvements and feel free to provide feedback or requests!
+                    </p>
+
+                    <p>Happy trading!</p>
+
                 </article>
-
-
 
             </div>
 
