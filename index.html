@@ -146,75 +146,89 @@
                 </article>
 
                 <article id="timezone" class="blog-post mb-10">
-                    <h2 class="blog-post-title">Sample blog post</h2>
-                    <p class="blog-post-meta">January 1, 2021 by Mark</p>
+                    <h2 class="blog-post-title">Implementing Timezone Awareness in MetaTrader 5 EAs</h2>
+                    <p class="blog-post-meta">Hune 10, 2025 by Keith</p>
 
-                    <h1>Latest Update: Timezone-Based Trading Hours & Modular Code Improvements</h1>
-                    <p>Welcome back to the Scalp EA No Shenanigans blog! In this post, I'll walk you through some recent
-                        enhancements made to the Expert Advisor to improve flexibility, especially around trading hours
-                        based on timezones, and modularizing the code for easier future updates.</p>
+                    <p>This post outlines a method to make your MetaTrader 5 Expert Advisor (EA) operate according to a
+                        user-defined local timezone, mitigating issues caused by broker server time differences and
+                        daylight saving shifts.</p>
 
-                    <h2>What’s New?</h2>
+                    <h3 class="mt-4 mb-3">Problem: Broker Server Time Dependency</h3>
+                    <p>MetaTrader 5 EAs typically rely on <code>TimeCurrent()</code> for time-based logic. This function
+                        returns the broker's server time, which may not align with a user's local timezone. Furthermore,
+                        broker server time can adjust for daylight saving, leading to inconsistencies in an EA's
+                        scheduled operations from the user's perspective.</p>
+
+                    <h3 class="mt-4 mb-3">Solution: User-Configurable Local Time Conversion</h3>
+                    <p>The solution involves introducing a user input for their local GMT offset and a dedicated
+                        function to convert the broker's server time to this user-defined local time. This ensures all
+                        time-sensitive EA logic operates consistently within the user's expected hours.</p>
+
+                    <h3 class="mt-4 mb-3">Implementation Steps</h3>
+                    <p>To implement this functionality in your MT5 EA, follow these steps:</p>
+
+                    <h4 class="mt-3 mb-2">1. Add User Input for GMT Offset</h4>
+                    <p>Introduce a new <code>input</code> parameter, preferably within a "Common Trading Inputs" group,
+                        to capture the user's local GMT offset.</p>
+
+                    <pre class="line-numbers" data-prismjs-copy="Copy Code"><code class="language-cpp">
+// In your input group (e.g., "=== Common Trading Inputs ===")
+input int UserGMTOffset = 0; // User's local GMT offset (e.g., 0 for GMT, 1 for GMT+1, -5 for GMT-5)
+</code></pre>
+
+
+                    <h4 class="mt-3 mb-2">2. Create a Time Conversion Utility Function</h4>
+                    <p>Add the following function to your EA code. This function will calculate the current hour
+                        adjusted to the specified <code>UserGMTOffset</code>.</p>
+
+                    <pre class="line-numbers" data-prismjs-copy="Copy Code"><code class="language-cpp">
+// Add this function outside of OnTick() or OnInit()
+int GetLocalHour()
+{
+   datetime serverTime = TimeCurrent(); // Get current broker server time
+   MqlDateTime dt;
+   TimeToStruct(serverTime, dt); // Convert to MqlDateTime structure
+
+   int serverGMTOffset = TimeGMTOffset() / 3600;  // Get broker's GMT offset in hours
+   int offsetDiff = UserGMTOffset - serverGMTOffset; // Calculate offset difference
+
+   int localHour = dt.hour + offsetDiff; // Adjust server hour
+
+   // Normalize localHour to be within 0-23
+   if (localHour < 0)
+      localHour += 24;
+   if (localHour >= 24)
+      localHour -= 24;
+
+   return localHour;
+}
+</code></pre>
+
                     <ul>
-                        <li>Added timezone selection for trading hours, allowing you to pick your local timezone or any
-                            timezone, with automatic conversion to the broker server time.</li>
-                        <li>Refactored trading hours logic into a reusable module, so it’s cleaner and easier to
-                            maintain.</li>
+                        <li><strong><code>TimeGMTOffset()</code>:</strong> This MQL5 function provides the broker's
+                            offset from GMT in seconds. Dividing by 3600 converts it to hours.</li>
+                        <li><strong><code>offsetDiff</code>:</strong> This variable calculates the necessary adjustment
+                            to transform the broker's hour into the <code>UserGMTOffset</code> hour.</li>
+                        <li><strong>Normalization:</strong> The <code>if</code> conditions ensure <code>localHour</code>
+                            correctly wraps around 0 and 23.</li>
                     </ul>
 
-                    <h2>Why This Matters</h2>
-                    <p>Previously, trading hours were hard-coded in server time, which made it tricky if your broker’s
-                        server time was different from your local time zone. This update ensures you can define trading
-                        windows in your preferred timezone, and the EA will handle the conversion seamlessly.</p>
+                    <h4 class="mt-3 mb-2">3. Update Time-Based Logic in <code>OnTick()</code></h4>
+                    <p>Modify any sections of your <code>OnTick()</code> function (or other relevant functions) that
+                        retrieve the current hour. Replace direct calls that use <code>TimeCurrent()</code> and
+                        <code>time.hour</code> with a call to the new <code>GetLocalHour()</code> function.</p>
 
-                    <h2>Code Changes Overview</h2>
-                    <p>Here’s an example snippet showing how the existing hardcoded trading hours logic was replaced
-                        with the new modular timezone-based approach.</p>
-
-                    <pre class="language-mql highlight-diff">
-<code>
-<span class="delete">datetime tradeStart = D'1970.01.01 07:00';</span>
-<span class="delete">datetime tradeEnd = D'1970.01.01 22:00';</span>
-
-<span class="insert">// Use modular timezone conversion to get trading window in server time</span>
-<span class="insert">datetime tradeStart = GetTradeStartTime(userTimezone, serverTimezone);</span>
-<span class="insert">datetime tradeEnd = GetTradeEndTime(userTimezone, serverTimezone);</span>
-</code>
-</pre>
-
-                    <h2>Modular Timezone Trading Hours Functions</h2>
-                    <p>The new functions encapsulate all the timezone math, keeping the main EA code clean:</p>
-
-                    <pre class="language-mql highlight-diff">
-<code>
-<span class="insert">datetime GetTradeStartTime(string userTZ, string serverTZ) {</span>
-<span class="insert">    // Logic to convert user-defined start time to server time</span>
-<span class="insert">    // ...</span>
-<span class="insert">    return serverStartTime;</span>
-<span class="insert">}</span>
-
-<span class="insert">datetime GetTradeEndTime(string userTZ, string serverTZ) {</span>
-<span class="insert">    // Logic to convert user-defined end time to server time</span>
-<span class="insert">    // ...</span>
-<span class="insert">    return serverEndTime;</span>
-<span class="insert">}</span>
-</code>
-</pre>
-
-                    <h2>How to Use</h2>
-                    <p>Set your desired timezone in the input parameters, for example:</p>
-                    <ul>
-                        <li><code>Input string userTimezone = "Europe/Dublin";</code></li>
-                        <li>The EA handles the rest, converting your times to broker server time automatically.</li>
-                    </ul>
-
-                    <h2>Conclusion</h2>
-                    <p>This update is just one step toward making Scalp EA more adaptable to diverse trading
-                        environments. Stay tuned for more improvements and feel free to provide feedback or requests!
-                    </p>
-
-                    <p>Happy trading!</p>
-
+                    <p><strong>Modified Code:</strong></p>
+                    <pre class="language-diff-cpp diff-highlight"><code class="language-diff-cpp">
+- MqlDateTime time;
+- TimeToStruct(TimeCurrent(),time);
+-
+- int Hournow = time.hour;
++ int Hournow = GetLocalHour();
+</code></pre>
+                    <p>By applying these changes, your EA's time-dependent operations will align with the user's
+                        configured local timezone, providing predictable behavior regardless of broker server time or
+                        daylight saving adjustments.</p>
                 </article>
 
             </div>
@@ -226,7 +240,7 @@
                         <h4 class="fst-italic">Archives</h4>
                         <ol class="list-unstyled mb-0">
                             <li><a href="#adx">Dynamic ADX - barsN</a></li>
-                            <li><a href="#">February 2021</a></li>
+                            <li><a href="#timezone">Timezone Allowance</a></li>
                         </ol>
                     </div>
                 </div>
